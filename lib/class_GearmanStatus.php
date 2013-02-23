@@ -9,10 +9,8 @@ class GearmanStatus
 
 
 	public function __construct( $host = "127.0.0.1", $port = 4730 ) {
-		if( $host )
-			$this->host = $host;
-		if( $port )
-			$this->port = $port;
+		if( $host ) $this->host = $host;
+		if( $port ) $this->port = $port;
 	}
 
 
