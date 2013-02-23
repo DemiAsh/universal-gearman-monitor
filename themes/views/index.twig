@@ -1,0 +1,76 @@
+{% extends "layout.twig" %}
+{% block title %}
+Status
+{% endblock %}
+{% block content %}
+<div class="row-fluid">
+
+	<div class="span2">
+		<div class="well">
+			<ul class="nav nav-list">
+				<li class="nav-header">Queue</li>
+				{% for k, it in status %}
+					<li><a href="#{{k}}{{loop.index}}">server: {{it.server}}</a></li>
+				{% endfor %}
+				<li class="divider"></li>
+				<li class="nav-header">Workers</li>
+				{% for k, worker in workers %}
+					{% for it in worker %}
+						<li><a href="#{{k}}{{loop.index}}">{{k}}: {{it.fd}}</a></li>
+					{% endfor %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="span10">
+		<!-- status -->
+		<h2>Queue</h2>
+		<table class="table table-hover table-striped table-bordered table-condensed">
+			<tr>
+				<th>#</th>
+				<th>Server</th>
+				<th>Function</th>
+				<th>Job in queue</th>
+				<th>Jobs running</th>
+				<th>Workers registred</th>
+			</tr>
+			{% for k, it in status %}
+			<tr>
+				<td><a name="{{k}}{{loop.index}}">{{loop.index}}</a></td>
+				<td>{{it.server}}</td>
+				<td>{{it.function}}</td>
+				<td>{{it.queue}}</td>
+				<td>{{it.running}}</td>
+				<td>{{it.workersCount}}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<!-- /status -->
+
+		<!-- workers -->
+		<h2>Workers</h2></h2>
+		{% for k, worker in workers %}
+		<h4>{{k}}</h4>
+			<table class="table table-hover table-striped table-bordered table-condensed">
+				<tr>
+					<th>#</th>
+					<th>File descriptors</th>
+					<th>IP address</th>
+					<th>Client ID</th>
+				</tr>
+
+				{% for it in worker %}
+					<tr>
+						<td><a name="{{k}}{{loop.index}}">{{loop.index}}</a></td>
+						<td>{{it.fd}}</td>
+						<td>{{it.ip}}</td>
+						<td>{{it.id}}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endfor %}
+		<!-- /workers -->
+	</div>
+</div>
+{% endblock %}
