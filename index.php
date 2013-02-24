@@ -1,6 +1,5 @@
 <?php
 
-
 require_once __DIR__ . '/lib/class_GearmanStatus.php';
 require_once __DIR__ . '/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
