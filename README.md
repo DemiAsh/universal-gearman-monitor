@@ -1,4 +1,4 @@
-Gearman-status
+universal gearman status monitor
 --------------
 
 Gearman-status it is universal dashboard to check status gearman queue and workers (pecl and pear client supports).
