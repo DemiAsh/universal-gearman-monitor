@@ -14,12 +14,13 @@ $twig = new Twig_Environment($loader);
  * $gearmand = new GearmanStatus("IP or domain", port);
  */
 $gearmand = new GearmanStatus();
+$status = $gearmand->getStatus();
 
-if( $gearmand->getStatus() )
+if( $status )
 {
 	echo $twig->render('index.twig', array(
-		'status' => (isset($gearmand->getStatus()->status) ? $gearmand->getStatus()->status : null),
-		'workers' => (isset($gearmand->getStatus()->workers) ? $gearmand->getStatus()->workers : null),
+		'status' => (isset($status->status) ? $status->status : null),
+		'workers' => (isset($status->workers) ? $status->workers : null),
 	));
 }
 else
