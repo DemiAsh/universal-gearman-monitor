@@ -13,13 +13,19 @@ $twig = new Twig_Environment($loader, array(
 	));
 $twig->addExtension(new Twig_Extension_Debug());
 
+/**
+* default gearmand-server listen 127.0.0.1:4730
+* if u wanna another server:
+* $gearmand = new GearmanStatus("IP or domain", port);
+*/
 $gearmand = new GearmanStatus();
+$status = $gearmand->getStatus();
 
-if( $gearmand->getStatus() )
+if( $status )
 {
 	echo $twig->render('index.twig', array(
-		'status' => (isset($gearmand->getStatus()->status) ? $gearmand->getStatus()->status : null),
-		'workers' => (isset($gearmand->getStatus()->workers) ? $gearmand->getStatus()->workers : null),
+		'status' => (isset($status->status) ? $status->status : null),
+		'workers' => (isset($status->workers) ? $status->workers : null),
 	));
 }
 else
