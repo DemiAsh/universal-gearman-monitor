@@ -21,8 +21,8 @@ $status = $gearmand->getStatus();
 if( $status )
 {
     $twig->display('index.twig', array(
-		'status' => (isset($status->status) ? $status->status : null),
-		'workers' => (isset($status->workers) ? $status->workers : null),
+        'status' => (isset($status->status) ? $status->status : null),
+        'workers' => (isset($status->workers) ? $status->workers : null),
 	));
 }
 else
