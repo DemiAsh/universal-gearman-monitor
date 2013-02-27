@@ -9,6 +9,7 @@ Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/themes/views');
 $twig = new Twig_Environment($loader, array(
+        'cache' => __DIR__ . '/themes/views/cache'
 		'debug' => true,
 	));
 $twig->addExtension(new Twig_Extension_Debug());

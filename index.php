@@ -5,7 +5,9 @@ require_once __DIR__ . '/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/themes/views');
-$twig = new Twig_Environment($loader);
+$twig = new Twig_Environment($loader, array(
+        'cache' => __DIR__ . '/themes/views/cache'
+    ));
 
 
 /**
@@ -18,12 +20,12 @@ $status = $gearmand->getStatus();
 
 if( $status )
 {
-	echo $twig->render('index.twig', array(
+    $twig->display('index.twig', array(
 		'status' => (isset($status->status) ? $status->status : null),
 		'workers' => (isset($status->workers) ? $status->workers : null),
 	));
 }
 else
 {
-	echo $twig->render('error.twig');
+	$twig->display('error.twig');
 }
