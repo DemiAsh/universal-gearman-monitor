@@ -55,13 +55,13 @@ class GearmanStatus
 		return $response;
 	}
 
-	protected function sendCmd($cmd) {
+	protected function sendCmd($cmd,$response = TRUE) {
 		fwrite($this->monitor, $cmd . "\n");
+		if( $response ) return $this->getResponse();
 	}
 
 	protected function getStatus() {
-		$this->sendCmd('status');
-		$line = $this->getResponse();
+		$line = $this->sendCmd('status');
 
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 		{
@@ -81,8 +81,7 @@ class GearmanStatus
 	}
 
 	protected function getWorkers() {
-		$this->sendCmd('workers');
-		$line = $this->getResponse();
+		$line = $this->sendCmd('workers');
 
 		if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
 		{
