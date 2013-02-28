@@ -35,7 +35,7 @@ class GearmanStatus
 		return (object)$status;
 	}
 
-    protected function getStatus() {
+	protected function getStatus() {
 		fwrite($this->monitor, "status\n");
 		while( !feof($this->monitor) )
 		{
@@ -60,9 +60,9 @@ class GearmanStatus
 		}
 
 		return $status;
-    }
+	}
 
-    protected function getWorkers() {
+	protected function getWorkers() {
 		fwrite($this->monitor, "workers\n");
 		while( !feof($this->monitor) )
 		{
@@ -90,6 +90,6 @@ class GearmanStatus
 		}
 
 		return $status;
-    }
+	}
 
 }
