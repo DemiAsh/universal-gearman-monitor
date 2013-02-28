@@ -22,6 +22,8 @@ class GearmanStatus
 
 
 	public function status() {
+		if( ! $this->monitor) return FALSE;
+
 		$status = null;
 
 		if( $this->monitor )
@@ -29,8 +31,6 @@ class GearmanStatus
 			$status['status'] = $this->getStatus();
 			$status['workers'] = $this->getWorkers();
 		}
-
-		if( ! $status) return FALSE;
 
 		return (object)$status;
 	}
