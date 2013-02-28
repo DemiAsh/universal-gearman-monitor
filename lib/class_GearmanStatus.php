@@ -8,7 +8,6 @@ class GearmanStatus
 	protected $port;
 	protected $monitor;
 
-
 	public function __construct( $host = "127.0.0.1", $port = 4730 ) {
 		if( $host ) $this->host = $host;
 		if( $port ) $this->port = $port;
@@ -35,28 +34,48 @@ class GearmanStatus
 		return (object)$status;
 	}
 
-	protected function getStatus() {
-		fwrite($this->monitor, "status\n");
-		while( !feof($this->monitor) )
+	public function shutdown($immedatly = FALSE) {
+		
+	}
+
+	protected function getResponse() {
+		$response = null;
+
+		while (true)
 		{
-			$line = fgets($this->monitor, 4096);
-			if( $line == ".\n" )
+			$data = fgets($this->monitor, 4096);
+
+			if ($data == ".\n")
 			{
 				break;
 			}
-			if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
-			{
-				$function = $matches['function'];
-				$status[$function] = array(
-					'server' => $this->host . ':' . $this->port,
-					'function' => $function,
-					'queue' => $matches['queue'],
-					'running' => $matches['running'],
-					'workersCount' => $matches['workersCount'],
-				);
-			
-				unset($matches);
-			}
+			$response .= $data;
+		}
+		
+		return $response;
+	}
+
+	protected function sendCmd($cmd) {
+		fwrite($this->monitor, $cmd . "\n");
+	}
+
+	protected function getStatus() {
+		$this->sendCmd('status');
+		
+		$line = $this->getResponse();
+
+		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
+		{
+			$function = $matches['function'];
+			$status[$function] = array(
+				'server' => $this->host . ':' . $this->port,
+				'function' => $function,
+				'queue' => $matches['queue'],
+				'running' => $matches['running'],
+				'workersCount' => $matches['workersCount'],
+			);
+		
+			unset($matches);
 		}
 
 		return $status;
