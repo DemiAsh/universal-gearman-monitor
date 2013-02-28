@@ -64,6 +64,8 @@ class GearmanStatus
 
 		$line = $this->getResponse();
 
+		var_dump($line);
+
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 		{
 			$function = $matches['function'];
