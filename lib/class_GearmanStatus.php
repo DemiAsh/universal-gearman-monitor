@@ -57,11 +57,13 @@ class GearmanStatus
 
 	protected function sendCmd($cmd,$response = TRUE) {
 		fwrite($this->monitor, $cmd . "\n");
-		if( $response ) return $this->getResponse();
+		if( $response ) return trim($this->getResponse());
 	}
 
 	protected function getStatus() {
 		$line = $this->sendCmd('status');
+
+		//list($m['function'], $m['queue'], $m['running'], $m['workersCount']) = explode("\t", $line);
 
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 		{
