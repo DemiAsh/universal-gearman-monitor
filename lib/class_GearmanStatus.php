@@ -6,37 +6,37 @@ class GearmanStatus
 
 	protected $host;
 	protected $port;
-    protected $monitor;
+	protected $monitor;
 
 
 	public function __construct( $host = "127.0.0.1", $port = 4730 ) {
 		if( $host ) $this->host = $host;
 		if( $port ) $this->port = $port;
 
-        $this->monitor = @fsockopen($this->host, $this->port);
+		$this->monitor = @fsockopen($this->host, $this->port);
 	}
+
+	public function __destruct() {
+		if($this->monitor) fclose($this->monitor);
+	}
+
+
+    public function status() {
+    	$status = null;
     
-    public function __destruct() {
-        if($this->monitor) fclose($this->monitor);
+    	if( $this->monitor )
+    	{
+			$status['status'] = $this->getStatus();
+			$status['workers'] = $this->getWorkers();
+    	}
+
+    	if( ! $status) return FALSE;
+
+    	return (object)$status;
     }
 
-
-	public function status() {
-		$status = null;
-
-		if( $this->monitor )
-		{
-            $status[] = $this->getStatus();
-            $status[] = $this->getWorkers();
-		}
-
-		if( ! $status) return FALSE;
-
-		return (object)$status;
-	}
-    
     protected function getStatus() {
-        fwrite($this->monitor, "status\n");
+		fwrite($this->monitor, "status\n");
     	while( !feof($this->monitor) )
 		{
 			$line = fgets($this->monitor, 4096);
@@ -47,7 +47,7 @@ class GearmanStatus
 			if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 			{
 				$function = $matches['function'];
-				$status['status'][$function] = array(
+				$status[$function] = array(
 					'server' => $this->host . ':' . $this->port,
 					'function' => $function,
 					'queue' => $matches['queue'],
@@ -59,11 +59,11 @@ class GearmanStatus
 			}
 		}
 
-        return $status;
+		return $status;
     }
-    
+
     protected function getWorkers() {
-        fwrite($this->monitor, "workers\n");
+		fwrite($this->monitor, "workers\n");
 		while( !feof($this->monitor) )
 		{
 			$line = fgets($this->monitor, 4096);
@@ -79,7 +79,7 @@ class GearmanStatus
 				if( !$function )
 					$function = 'monitor';
 
-				$status['workers'][$function][$fd] = array(
+				$status[$function][$fd] = array(
 					'fd' => $fd,
 					'ip' => $matches['ip'],
 					'id' => $matches['id'],
@@ -89,7 +89,7 @@ class GearmanStatus
 			}
 		}
 
-        return $status;
+		return $status;
     }
 
 }

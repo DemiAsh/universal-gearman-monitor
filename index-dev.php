@@ -9,8 +9,8 @@ Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/themes/views');
 $twig = new Twig_Environment($loader, array(
-        'cache' => __DIR__ . '/themes/views/cache',
-        'debug' => true
+		'cache' => __DIR__ . '/themes/views/cache',
+		'debug' => true
 	));
 $twig->addExtension(new Twig_Extension_Debug());
 
@@ -24,8 +24,8 @@ $status = $gearmand->status();
 
 if( $status )
 {
-    $twig->display('index.twig', array(
-        'status' => (isset($status->status) ? $status->status : null),
+	$twig->display('index.twig', array(
+		'status' => (isset($status->status) ? $status->status : null),
 		'workers' => (isset($status->workers) ? $status->workers : null),
 	));
 }
