@@ -61,10 +61,7 @@ class GearmanStatus
 
 	protected function getStatus() {
 		$this->sendCmd('status');
-
 		$line = $this->getResponse();
-
-		var_dump($line);
 
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 		{
@@ -78,14 +75,13 @@ class GearmanStatus
 			);
 		
 			unset($matches);
-		}
 
-		return $status;
+			return $status;
+		}
 	}
 
 	protected function getWorkers() {
 		$this->sendCmd('workers');
-
 		$line = $this->getResponse();
 
 		if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
@@ -103,9 +99,9 @@ class GearmanStatus
 			);
 
 			unset($matches);
-		}
 
-		return $status;
+			return $status;
+		}
 	}
 
 }
