@@ -21,23 +21,23 @@ class GearmanStatus
 	}
 
 
-    public function status() {
-    	$status = null;
-    
-    	if( $this->monitor )
-    	{
+	public function status() {
+		$status = null;
+
+		if( $this->monitor )
+		{
 			$status['status'] = $this->getStatus();
 			$status['workers'] = $this->getWorkers();
-    	}
+		}
 
-    	if( ! $status) return FALSE;
+		if( ! $status) return FALSE;
 
-    	return (object)$status;
-    }
+		return (object)$status;
+	}
 
     protected function getStatus() {
 		fwrite($this->monitor, "status\n");
-    	while( !feof($this->monitor) )
+		while( !feof($this->monitor) )
 		{
 			$line = fgets($this->monitor, 4096);
 			if( $line == ".\n" )
@@ -54,7 +54,7 @@ class GearmanStatus
 					'running' => $matches['running'],
 					'workersCount' => $matches['workersCount'],
 				);
-
+			
 				unset($matches);
 			}
 		}
