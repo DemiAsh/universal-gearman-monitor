@@ -16,7 +16,7 @@ $twig = new Twig_Environment($loader, array(
  * $gearmand = new GearmanStatus("IP or domain", port);
  */
 $gearmand = new GearmanStatus();
-$status = $gearmand->getStatus();
+$status = $gearmand->status();
 
 if( $status )
 {

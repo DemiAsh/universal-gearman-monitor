@@ -20,7 +20,7 @@ $twig->addExtension(new Twig_Extension_Debug());
 * $gearmand = new GearmanStatus("IP or domain", port);
 */
 $gearmand = new GearmanStatus();
-$status = $gearmand->getStatus();
+$status = $gearmand->status();
 
 if( $status )
 {
