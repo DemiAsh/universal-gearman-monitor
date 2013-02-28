@@ -61,7 +61,7 @@ class GearmanStatus
 
 	protected function getStatus() {
 		$this->sendCmd('status');
-		
+
 		$line = $this->getResponse();
 
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
@@ -82,30 +82,25 @@ class GearmanStatus
 	}
 
 	protected function getWorkers() {
-		fwrite($this->monitor, "workers\n");
-		while( !feof($this->monitor) )
+		$this->sendCmd('workers');
+
+		$line = $this->getResponse();
+
+		if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
 		{
-			$line = fgets($this->monitor, 4096);
-			if( $line == ".\n" )
-			{
-				break;
-			}
-			if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
-			{
-				$function = $matches['function'];
-				$fd = $matches['fd'];
+			$function = $matches['function'];
+			$fd = $matches['fd'];
 
-				if( !$function )
-					$function = 'monitor';
+			if( !$function )
+				$function = 'monitor';
 
-				$status[$function][$fd] = array(
-					'fd' => $fd,
-					'ip' => $matches['ip'],
-					'id' => $matches['id'],
-				);
+			$status[$function][$fd] = array(
+				'fd' => $fd,
+				'ip' => $matches['ip'],
+				'id' => $matches['id'],
+			);
 
-				unset($matches);
-			}
+			unset($matches);
 		}
 
 		return $status;

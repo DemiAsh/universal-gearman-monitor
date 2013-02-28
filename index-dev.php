@@ -26,7 +26,7 @@ if( $status )
 {
 	$twig->display('index.twig', array(
 		'status' => (isset($status->status) ? $status->status : null),
-		//'workers' => (isset($status->workers) ? $status->workers : null),
+		'workers' => (isset($status->workers) ? $status->workers : null),
 	));
 }
 else
