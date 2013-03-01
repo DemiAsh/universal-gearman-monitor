@@ -69,7 +69,7 @@ class GearmanStatus
 		$line = $this->sendCmd('status');
 
 		//list($m['function'], $m['queue'], $m['running'], $m['workersCount']) = explode("\t", $line);
-
+		$matches = array();
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 		{
 			$function = $matches['function'];
@@ -96,6 +96,7 @@ class GearmanStatus
 			$lines = explode("\n", $lines);
 			foreach($lines as $line)
 			{
+				$matches = array();
 				if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
 				{
 					$function = $matches['function'];
