@@ -87,8 +87,11 @@ class GearmanStatus
 	}
 
 	protected function getWorkers() {
-		$line = $this->sendCmd('workers');
-
+		$lines = $this->sendCmd('workers');
+		$lines = explode("\n",$lines);
+		
+		foreach($lines as $line)
+		{
 		if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
 		{
 			$function = $matches['function'];
@@ -105,8 +108,9 @@ class GearmanStatus
 
 			unset($matches);
 
-			return $status;
 		}
+		}
+		return $status;
 	}
 
 	private function _disconnect() {
