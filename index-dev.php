@@ -14,7 +14,6 @@ $twig = new Twig_Environment($loader, array(
 	));
 $twig->addExtension(new Twig_Extension_Debug());
 
-$status = null;
 $status = GearmanStatus::factory("127.0.0.1", 4730)->status();
 
 if( $status )

@@ -30,7 +30,7 @@ class GearmanStatus
 		}
 		else
 		{
-			$status = null;
+			$status = array();
 			$status['status'] = $this->getStatus();
 			$status['workers'] = $this->getWorkers();
 
@@ -65,14 +65,13 @@ class GearmanStatus
 	}
 
 	protected function getStatus() {
+		$status = array();
 		$line = $this->sendCmd('status');
 
 		//list($m['function'], $m['queue'], $m['running'], $m['workersCount']) = explode("\t", $line);
 
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 		{
-			$status = null;
-
 			$function = $matches['function'];
 			$status[$function] = array(
 				'server' => $this->host . ':' . $this->port,
@@ -89,6 +88,7 @@ class GearmanStatus
 	}
 
 	protected function getWorkers() {
+		$status = array();
 		$lines = $this->sendCmd('workers');
 
 		if ($lines)
