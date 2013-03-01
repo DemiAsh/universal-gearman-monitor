@@ -12,8 +12,6 @@ $twig = new Twig_Environment($loader, array(
 $status = null;
 $status = GearmanStatus::factory("127.0.0.1", 4730)->status();
 
-var_dump($status->workers);
-
 if( $status )
 {
 	$twig->display('index.twig', array(
