@@ -90,30 +90,32 @@ class GearmanStatus
 
 	protected function getWorkers() {
 		$lines = $this->sendCmd('workers');
-		$lines = explode("\n",$lines);
-		
-		foreach($lines as $line)
-		{
-		if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
-		{
-			$status = null;
 
-			$function = $matches['function'];
-			$fd = $matches['fd'];
+		//if ($lines)
+		//{
+			$lines = explode("\n", $lines);
+			foreach($lines as $line)
+			{
+				if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
+				{
+					$status = null;
 
-			if( !$function ) $function = 'monitor';
+					$function = $matches['function'];
+					$fd = $matches['fd'];
 
-			$status[$function][$fd] = array(
-				'fd' => $fd,
-				'ip' => $matches['ip'],
-				'id' => $matches['id'],
-			);
+					if( !$function ) $function = 'monitor';
 
-			unset($matches);
+					$status[$function][$fd] = array(
+						'fd' => $fd,
+						'ip' => $matches['ip'],
+						'id' => $matches['id'],
+					);
 
-		}
-		}
-		return $status;
+					unset($matches);
+				}
+			}
+			return $status;
+		//}
 	}
 
 	private function _disconnect() {
