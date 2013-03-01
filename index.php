@@ -9,7 +9,7 @@ $twig = new Twig_Environment($loader, array(
 		'cache' => __DIR__ . '/themes/views/cache'
 	));
 
-
+$status = null;
 $status = GearmanStatus::factory("127.0.0.1", 4730)->status();
 
 if( $status )

@@ -8,11 +8,11 @@ class GearmanStatus
 	protected $port;
 	protected $monitor;
 
-	public static function factory($host = "127.0.0.1", $port = 4730) {
+	public static function factory( $host = "127.0.0.1", $port = 4730 ) {
 		return new self($host,$port);
 	}
 
-	public function __construct( $host = "127.0.0.1", $port = 4730 ) {
+	public function __construct( $host, $port ) {
 		if( $host ) $this->host = $host;
 		if( $port ) $this->port = $port;
 
@@ -20,25 +20,26 @@ class GearmanStatus
 	}
 
 	public function __destruct() {
-		if($this->monitor) fclose($this->monitor);
+		$this->disconnect();
 	}
 
 	public function status() {
-		if( ! $this->monitor) return FALSE;
-
-		$status = null;
-
-		if( $this->monitor )
+		if( ! $this->monitor)
 		{
+			return FALSE;
+		}
+		else
+		{
+			$status = null;
 			$status['status'] = $this->getStatus();
 			$status['workers'] = $this->getWorkers();
-		}
 
-		return (object)$status;
+			return (object)$status;
+		}
 	}
 
 	public function shutdown($immedatly = FALSE) {
-
+		$this->disconnect();
 	}
 
 	protected function getResponse() {
@@ -106,6 +107,10 @@ class GearmanStatus
 
 			return $status;
 		}
+	}
+
+	protected function disconnect() {
+		if($this->monitor) fclose($this->monitor);
 	}
 
 }
