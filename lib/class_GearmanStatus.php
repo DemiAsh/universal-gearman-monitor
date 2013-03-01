@@ -20,7 +20,7 @@ class GearmanStatus
 	}
 
 	public function __destruct() {
-		$this->disconnect();
+		$this->_disconnect();
 	}
 
 	public function status() {
@@ -39,7 +39,7 @@ class GearmanStatus
 	}
 
 	public function shutdown($immedatly = FALSE) {
-		$this->disconnect();
+		$this->_disconnect();
 	}
 
 	protected function getResponse() {
@@ -109,7 +109,7 @@ class GearmanStatus
 		}
 	}
 
-	protected function disconnect() {
+	private function _disconnect() {
 		if($this->monitor) fclose($this->monitor);
 	}
 
