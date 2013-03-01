@@ -71,6 +71,8 @@ class GearmanStatus
 
 		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
 		{
+			$status = null;
+
 			$function = $matches['function'];
 			$status[$function] = array(
 				'server' => $this->host . ':' . $this->port,
@@ -94,11 +96,12 @@ class GearmanStatus
 		{
 		if( preg_match("/^(?<fd>\d+)[ \t](?<ip>.*?)[ \t](?<id>.*?) : ?(?<function>.*)/", $line, $matches) )
 		{
+			$status = null;
+
 			$function = $matches['function'];
 			$fd = $matches['fd'];
 
-			if( !$function )
-				$function = 'monitor';
+			if( !$function ) $function = 'monitor';
 
 			$status[$function][$fd] = array(
 				'fd' => $fd,

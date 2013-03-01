@@ -7,4 +7,10 @@ Receives the status from gearmand by socket, alternative "(echo status|workers) 
 
 Yii extension (gearman monitor and management) soon...
 
+DEMO
+--------------
+http://gearman.nosfire.ru/demo/
+
+Screenshots
+--------------
 ![](http://files.nosfire.ru/i/3609c0bb26b034e41ba67095f9f92ef0.png)
