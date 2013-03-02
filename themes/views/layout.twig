@@ -8,16 +8,25 @@
 			<link href="{{media}}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 			<link href="{{media}}/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
 			<link href="{{media}}/css/style.css" rel="stylesheet" type="text/css" />
+			<script type="text/javascript" src="{{media}}/js/jquery-1.9.0.min.js"></script>
+			<script type="text/javascript" src="{{media}}/js/bootstrap.min.js"></script>
 		{% endblock %}
 	</head>
 	<body>
+
 		<div class="navbar navbar-static-top">
 			<div class="navbar-inner">
-				<a class="brand" href="{{path('home')}}"><img src="{{media}}/img/cogwheels.png" /></a>
+				<a class="brand" href="/"><img src="{{media}}/img/cogwheels.png" /></a>
 				<ul class="nav">
-					<li class="{% if app.request.requesturi == path('home') %}active{% endif %}"><a href="{{path('home')}}"><i class="icon-list"></i> Status</a></li>
-					<li class="{% if app.request.requesturi == path('quota') %} active{% endif %}"><a href="{{path('quota')}}"><i class="icon-tasks"></i> Function quota</a></li>
-					<li class="{% if app.request.requesturi == path('shutdown') %} active{% endif %}"><a href="{{path('shutdown')}}"><i class="icon-off"></i> Shutdown</a></li>
+					<li class="{% if app.request.requesturi == "/" %}active{% endif %}"><a href="/"><i class="icon-list"></i> Status</a></li>
+					<li class="{% if app.request.requesturi == "/quota" %} active{% endif %}"><a href="/quota"><i class="icon-tasks"></i> Function quota</a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-off"></i> Shutdown</a>
+						<ul class="dropdown-menu">
+							<li><a href="/shutdown/0">Shutdown</a></li>
+							<li><a href="/shutdown/1">Shutdown gently</a></li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>

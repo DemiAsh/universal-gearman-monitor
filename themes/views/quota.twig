@@ -3,13 +3,43 @@
 Status
 {% endblock %}
 {% block content %}
-<div class="row-fluid">
-	<div class="row-fluid">
-		<div class="span8 offset2">
-			<div class="hero-unit">
-				Quota
-			</div>
+<div class="container">
+	{% if flashMessage is defined %}
+		<div class="alert alert-success">
+			Well done! You successfully limit function quota
 		</div>
-	</div>
+	{% endif %}
+	<form name="limition" class="well span5 offset3 form-horizontal" action="{{path('quota')}}" method="POST">
+		<fieldset>
+			<legend>Set quota to function</legend>
+			<div class="control-group">
+				<label class="control-label" for="fname">Function name</label>
+				<div class="controls">
+					<select id="fname" name="function">
+						{% if status %}
+							{% for it in status %}
+							<option value="{{it.function}}">{{it.function}}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="fsize">Function quota size</label>
+				<div class="controls">
+					<input id="fsize" type="text" name="size" >
+					<p class="text-info">
+						<small>If size is negative, then queue will be unlimited</small>
+					</p>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button name="submit" type="submit" class="btn">Limit function</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
 </div>
+
 {% endblock %}

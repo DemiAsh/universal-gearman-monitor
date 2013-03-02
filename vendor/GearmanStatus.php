@@ -75,30 +75,36 @@ class GearmanStatus
 		}
 	}
 
-	protected function getStatus() {
+	public function getStatus() {
 		$status = array();
-		$line = $this->sendCmd('status');
+		$lines = $this->sendCmd('status');
 
-		//list($m['function'], $m['queue'], $m['running'], $m['workersCount']) = explode("\t", $line);
-		$matches = array();
-		if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
+		if ($lines)
 		{
-			$function = $matches['function'];
-			$status[$function] = array(
-				'server' => $this->host . ':' . $this->port,
-				'function' => $function,
-				'queue' => $matches['queue'],
-				'running' => $matches['running'],
-				'workersCount' => $matches['workersCount'],
-			);
+			$lines = explode("\n", $lines);
+			foreach($lines as $line)
+			{
+				$matches = array();
+				if( preg_match("/^(?<function>.*)[ \t](?<queue>\d+)[ \t](?<running>\d+)[ \t](?<workersCount>\d+)/", $line, $matches) )
+				{
+					$function = $matches['function'];
+					$status[$function] = array(
+						'server' => $this->host . ':' . $this->port,
+						'function' => $function,
+						'queue' => $matches['queue'],
+						'running' => $matches['running'],
+						'workersCount' => $matches['workersCount'],
+					);
 
-			unset($matches);
-
+					unset($matches);
+				}
+			}
+			asort($status);
 			return $status;
 		}
 	}
 
-	protected function getWorkers() {
+	public function getWorkers() {
 		$status = array();
 		$lines = $this->sendCmd('workers');
 

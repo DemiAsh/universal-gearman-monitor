@@ -11,7 +11,7 @@ Status
 				{% if status %}
 					<li class="nav-header">Queue</li>
 					{% for k, it in status %}
-						<li><a href="#{{k}}{{loop.index}}">server: {{it.server}}</a></li>
+						<li><a href="#{{k}}{{loop.index}}">function: {{it.function}}</a></li>
 					{% endfor %}
 					<li class="divider"></li>
 				{% endif %}
