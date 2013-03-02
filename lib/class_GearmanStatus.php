@@ -38,8 +38,14 @@ class GearmanStatus
 		}
 	}
 
-	public function shutdown($immedatly = FALSE) {
-		$this->_disconnect();
+	public function setMaxQueue($function, $maxSize) {
+		// TODO: Validation
+		$this->sendCmd("maxqueue {$function} {$maxSize}", FALSE);
+	}
+
+	public function shutdown($gently = FALSE) {
+		$cmd = ($gently ? "shutdown graceful" : "shutdown");
+		$this->sendCmd($cmd, FALSE);
 	}
 
 	protected function getResponse() {
@@ -60,8 +66,11 @@ class GearmanStatus
 	}
 
 	protected function sendCmd($cmd,$response = TRUE) {
-		fwrite($this->monitor, $cmd . "\n");
-		if( $response ) return trim($this->getResponse());
+		if ($this->monitor)
+		{
+			fwrite($this->monitor, $cmd . "\n");
+			if( $response ) return trim($this->getResponse());
+		}
 	}
 
 	protected function getStatus() {
