@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(65535);
-ini_set("display_errors", 1);
-
 require_once __DIR__ . '/vendor/autoload.php';
 
 $app = new Silex\Application();
@@ -20,8 +17,6 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 	return $twig;
 }));
 
-
-$app['debug'] = true;
 $gearmand = GearmanStatus::factory("127.0.0.1", 4730);
 
 
