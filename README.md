@@ -10,8 +10,9 @@ Yii extension (gearman monitor and management) soon...
 
 Required
 --------------
-PHP 5.3+
-GearmanD
+- PHP 5.3+  
+
+- GearmanD
 
 
 
