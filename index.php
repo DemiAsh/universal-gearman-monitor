@@ -1,24 +1,53 @@
 <?php
 
-require_once __DIR__ . '/lib/class_GearmanStatus.php';
-require_once __DIR__ . '/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
+error_reporting(65535);
+ini_set("display_errors", 1);
 
-$loader = new Twig_Loader_Filesystem(__DIR__ . '/themes/views');
-$twig = new Twig_Environment($loader, array(
-		'cache' => __DIR__ . '/themes/views/cache'
-	));
+require_once __DIR__ . '/vendor/autoload.php';
 
-$status = GearmanStatus::factory("127.0.0.1", 4730)->status();
+$app = new Silex\Application();
 
-if( $status )
+use Symfony\Component\HttpFoundation\Response;
+
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+	'twig.path' => __DIR__ . '/themes/views',
+	'twig.options' => array( 'cache' => __DIR__ . '/themes/views/cache' ),
+));
+
+$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+	$twig->addGlobal('media', '/themes/media');
+	return $twig;
+}));
+
+
+$app['debug'] = true;
+$gearmand = GearmanStatus::factory("127.0.0.1", 4730);
+
+if( $gearmand->up )
 {
-	$twig->display('index.twig', array(
-		'status' => $status->status,
-		'workers' => $status->workers,
-	));
+	$app->get('', function() use ($app, $gearmand) {
+		$status = $gearmand->status();
+		return $app['twig']->render('index.twig', array(
+					'status' => $status->status,
+					'workers' => $status->workers,
+		));
+	})->bind('home');
+
+	$app->get('/quota', function() use ($app, $gearmand) {
+
+		return $app['twig']->render('quota.twig', array());
+	})->bind('quota');
+
+	$app->get('/shutdown', function() use ($app, $gearmand) {
+
+		return $app['twig']->render('shutdown.twig', array());
+	})->bind('shutdown');
 }
 else
 {
-	$twig->display('error.twig');
+	$app->error(function() use ($app) {
+		return new Response($app['twig']->render('error.twig'), 503);
+	});
 }
+$app->run();

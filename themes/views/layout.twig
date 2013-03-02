@@ -5,15 +5,20 @@
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<title>{% block title %}{% endblock %} - GearmanStatus</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<link href="themes/media/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-			<link href="themes/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
-			<link href="themes/media/css/style.css" rel="stylesheet" type="text/css" />
+			<link href="{{media}}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+			<link href="{{media}}/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+			<link href="{{media}}/css/style.css" rel="stylesheet" type="text/css" />
 		{% endblock %}
 	</head>
 	<body>
 		<div class="navbar navbar-static-top">
 			<div class="navbar-inner">
-				<a class="brand" href="/"><img src="themes/media/img/cogwheels.png" /> Gearman Status</a>
+				<a class="brand" href="{{path('home')}}"><img src="{{media}}/img/cogwheels.png" /></a>
+				<ul class="nav">
+					<li class="{% if app.request.requesturi == path('home') %}active{% endif %}"><a href="{{path('home')}}"><i class="icon-list"></i> Status</a></li>
+					<li class="{% if app.request.requesturi == path('quota') %} active{% endif %}"><a href="{{path('quota')}}"><i class="icon-tasks"></i> Function quota</a></li>
+					<li class="{% if app.request.requesturi == path('shutdown') %} active{% endif %}"><a href="{{path('shutdown')}}"><i class="icon-off"></i> Shutdown</a></li>
+				</ul>
 			</div>
 		</div>
 		<div class="container-fluid">

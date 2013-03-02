@@ -7,3 +7,6 @@ h2 {
 .span2 .well {
 	padding: 15px 0 15px;
 }
+.nav li {
+	line-height: 27px;
+}
