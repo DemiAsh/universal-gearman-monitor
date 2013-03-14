@@ -15,7 +15,7 @@ Required
 - GearmanD
 
 E-mail for feedback:
-- artfactor(at)nosfire(dot)ru
+- artfactor (at) nosfire (dot) ru
 
 
 Screenshots
