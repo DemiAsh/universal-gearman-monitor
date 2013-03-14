@@ -14,6 +14,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 	$twig->addGlobal('media', '/themes/media');
+	$twig->addGlobal('gs', '1.0');
 	return $twig;
 }));
 

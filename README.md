@@ -7,10 +7,18 @@ Receives the status from gearmand by socket, alternative "(echo status|workers) 
 
 Yii extension (gearman monitor and management) soon...
 
-DEMO
+
+Required
 --------------
-http://gearman.nosfire.ru/demo/
+- PHP 5.3+
+
+- GearmanD
+
+E-mail for feedback
+--------------
+- artfactor (at) nosfire (dot) ru
+
 
 Screenshots
 --------------
-![](http://files.nosfire.ru/i/3609c0bb26b034e41ba67095f9f92ef0.png)
+![](http://files.nosfire.ru/i/8317a4260b55cd84308aa3f16ad849e1.png)
